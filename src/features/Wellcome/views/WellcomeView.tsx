@@ -1,3 +1,4 @@
+import { Button } from "@/core/components/shadcn/button";
 import { Link } from "react-router";
 
 export default function WelcomeView() {
@@ -14,6 +15,9 @@ export default function WelcomeView() {
           >
             Products
           </Link>
+        </div>
+        <div className="flex items-center gap-2 justify-center">
+          <Button variant="outline" onClick={() => alert("Shadcn Button")}>Shadcn Button</Button>
         </div>
       </div>
     </>
