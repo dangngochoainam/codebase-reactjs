@@ -1,0 +1,6 @@
+export const STATUS_CODES = {
+  ACCEPT: "ACCEPT",
+  REJECT: "REJECT",
+  PROCESSING: "PROCESSING",
+  ERROR: "ERROR",
+};
