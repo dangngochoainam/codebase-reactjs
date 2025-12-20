@@ -1,9 +1,4 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Github } from "lucide-react";
 import { Button } from "@/core/components/shadcn/button";
-import { Input } from "@/core/components/shadcn/input";
 import {
   Form,
   FormControl,
@@ -11,9 +6,14 @@ import {
   FormItem,
   FormMessage,
 } from "@/core/components/shadcn/form";
-import { useAuth } from "../hooks/useAuth";
+import { Input } from "@/core/components/shadcn/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Github } from "lucide-react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import * as z from "zod";
+import { useAuth } from "../hooks/useAuth";
 
 const signInSchema = z.object({
   email: z
@@ -46,10 +46,11 @@ export default function SignInView() {
     setError(null);
 
     try {
-      await signIn({
+      const response = await signIn({
         email: data.email,
         password: data.password,
       });
+      console.log(response);
       navigate("/products");
     } catch (err) {
       const errorMessage =

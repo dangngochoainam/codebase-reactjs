@@ -1,4 +1,6 @@
-import { STATUS_CODES } from "@/core/constants/statusCode";
+import { StorageKey } from "@/core/constants/constants";
+import { HttpMethod, httpRequest, StatusCode } from "@/core/lib/utils/http";
+import { Storage } from "@/core/lib/utils/storage";
 
 export interface SignUpRequest {
   email: string;
@@ -8,11 +10,11 @@ export interface SignUpRequest {
 }
 
 export interface SignUpResponse {
-  trace_id: string;
-  status_code: string;
-  reason_code?: string;
-  reason_message?: string;
-  time_ms?: string;
+  traceId: string;
+  statusCode: StatusCode;
+  reasonCode?: string;
+  reasonMessage?: string;
+  timeMs?: string;
 }
 
 export interface SignInRequest {
@@ -21,58 +23,29 @@ export interface SignInRequest {
 }
 
 export interface SignInResponse {
-  trace_id: string;
-  status_code: string;
-  reason_code?: string;
-  reason_message?: string;
-  time_ms?: string;
+  traceId: string;
+  statusCode: StatusCode;
+  reasonCode?: string;
+  reasonMessage?: string;
+  timeMs?: string;
+  accessToken?: string;
+  refreshToken?: string;
 }
 
 export const useAuth = () => {
   const signUp = async (input: SignUpRequest): Promise<SignUpResponse> => {
-    const response = await fetch("http://localhost:50051/v1/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(input),
-    });
-
-    if (!response.ok) {
-      const error = await response
-        .json()
-        .catch(() => ({ message: "Signup failed" }));
-      throw new Error(error.message || "Signup failed");
-    }
-
-    const data = await response.json();
-    if (data.statusCode === STATUS_CODES.ACCEPT) {
-      return data;
-    }
-    throw new Error(data.reasonMessage || "Signup failed");
+    return httpRequest<SignUpResponse>("auth/signup", HttpMethod.POST, input);
   };
 
   const signIn = async (input: SignInRequest): Promise<SignInResponse> => {
-    const response = await fetch("http://localhost:50051/v1/auth/signin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(input),
-    });
-
-    if (!response.ok) {
-      const error = await response
-        .json()
-        .catch(() => ({ message: "Signin failed" }));
-      throw new Error(error.message || "Signin failed");
-    }
-
-    const data = await response.json();
-    if (data.statusCode === STATUS_CODES.ACCEPT) {
-      return data;
-    }
-    throw new Error(data.reasonMessage || "Signin failed");
+    const response = await httpRequest<SignInResponse>(
+      "auth/signin",
+      HttpMethod.POST,
+      input
+    );
+    Storage.setItem(StorageKey.ACCESS_TOKEN, response.accessToken);
+    Storage.setItem(StorageKey.REFRESH_TOKEN, response.refreshToken);
+    return response;
   };
 
   return { signUp, signIn };
