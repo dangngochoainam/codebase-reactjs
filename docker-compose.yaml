@@ -1,0 +1,17 @@
+services:
+  web: 
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:50051/v1
+    ports:
+      - "80:80"
+    networks:
+      - docker_stack
+    environment:
+      - NODE_ENV=production
+
+networks:
+  docker_stack:
+    external: true
