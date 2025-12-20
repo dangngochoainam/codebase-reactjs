@@ -1,7 +1,6 @@
 import type { ProductModel } from "../types/product.types";
 
 export default function ProductItem({ product }: { product: ProductModel }) {
-  console.log(product);
   return (
     <div className=" bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
       <a href="#">
