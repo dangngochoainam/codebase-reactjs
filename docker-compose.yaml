@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
       args:
-        - VITE_API_URL=http://localhost:50051/v1
+        - VITE_API_URL=http://172.93.163.153:50061/v1
     ports:
       - "80:80"
     networks:
