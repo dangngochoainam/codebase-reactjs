@@ -28,7 +28,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/codebase-reactjs:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/codebase-reactjs:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/codebase-reactjs:${{ github.sha }}
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/codebase-reactjs:${{ github.sha }}
 
             docker stop codebase-reactjs || true
             docker rm codebase-reactjs || true
@@ -60,4 +60,4 @@ jobs:
             -p 80:80 \
             --name codebase-reactjs \
             --network docker_stack \
-            ${{ secrets.DOCKER_USERNAME }}/codebase-reactjs:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/codebase-reactjs:${{ github.sha }}
