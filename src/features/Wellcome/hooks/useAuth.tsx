@@ -1,8 +1,7 @@
-import { StorageKey } from "@/core/constants/constants";
+import { useToken } from "@/core/auth/hooks/useToken";
 import { HttpMethod, StatusCode } from "@/core/lib/utils/http";
 
 import { httpRequest } from "@/core/lib/utils/http";
-import { Storage } from "@/core/lib/utils/storage";
 
 interface SignOutResponse {
   traceId: string;
@@ -13,13 +12,21 @@ interface SignOutResponse {
 }
 
 export const useAuth = () => {
+  const token = useToken();
+  const headers: HeadersInit = {
+    "Content-Type": "application/json",
+    Authorization: "",
+  };
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
   const signOut = async (): Promise<SignOutResponse> => {
     const response = await httpRequest<SignOutResponse>(
       "auth/signout",
-      HttpMethod.POST
+      HttpMethod.POST,
+      undefined,
+      { headers }
     );
-    Storage.removeItem(StorageKey.ACCESS_TOKEN);
-    Storage.removeItem(StorageKey.REFRESH_TOKEN);
     return response;
   };
 

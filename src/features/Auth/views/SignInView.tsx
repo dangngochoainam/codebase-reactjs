@@ -1,3 +1,5 @@
+import { useAuthDispatch } from "@/core/auth/hooks/useAuthDispatch";
+import { AuthActionType } from "@/core/auth/types";
 import { Button } from "@/core/components/shadcn/button";
 import {
   Form,
@@ -33,6 +35,8 @@ export default function SignInView() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const authDispatch = useAuthDispatch();
+
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -50,7 +54,15 @@ export default function SignInView() {
         email: data.email,
         password: data.password,
       });
-      console.log(response);
+      authDispatch({
+        type: AuthActionType.SIGN_IN,
+        payload: {
+          userId: response.userId,
+          name: response.name,
+          email: response.email,
+          accessToken: response.accessToken,
+        },
+      });
       navigate("/products");
     } catch (err) {
       const errorMessage =
