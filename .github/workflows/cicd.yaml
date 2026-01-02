@@ -35,13 +35,13 @@ jobs:
     needs: build_and_push
 
   environment: dev
-    env: 
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-      SERVER_HOST: ${{ secrets.SERVER_HOST }}
-      SERVER_USER: ${{ secrets.SERVER_USER }}
-      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      VITE_API_URL: ${{ env.VITE_API_URL }}
+  env: 
+    DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+    DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    SERVER_HOST: ${{ secrets.SERVER_HOST }}
+    SERVER_USER: ${{ secrets.SERVER_USER }}
+    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    VITE_API_URL: ${{ env.VITE_API_URL }}
 
     steps:
       - name: Deploy to Server
