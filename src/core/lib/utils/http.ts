@@ -1,5 +1,3 @@
-import { StorageKey } from "@/core/constants/constants";
-import { Storage } from "./storage";
 import { ENV } from "@/core/configs/env";
 
 export enum StatusCode {
@@ -35,14 +33,11 @@ export const httpRequest = async <
   const headers: HeadersInit = {
     "Content-Type": "application/json",
   };
-  const accessToken = Storage.getItem(StorageKey.ACCESS_TOKEN);
-  if (accessToken) {
-    headers.Authorization = `Bearer ${accessToken}`;
-  }
 
   const response = await fetch(`${ENV.api.baseUrl}/${url}`, {
     headers,
     method,
+    credentials: "include",
     body: body ? JSON.stringify(body) : undefined,
     ...options,
   });

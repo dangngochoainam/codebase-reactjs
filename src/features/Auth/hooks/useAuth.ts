@@ -1,6 +1,4 @@
-import { StorageKey } from "@/core/constants/constants";
 import { HttpMethod, httpRequest, StatusCode } from "@/core/lib/utils/http";
-import { Storage } from "@/core/lib/utils/storage";
 
 export interface SignUpRequest {
   email: string;
@@ -28,8 +26,11 @@ export interface SignInResponse {
   reasonCode?: string;
   reasonMessage?: string;
   timeMs?: string;
-  accessToken?: string;
-  refreshToken?: string;
+  accessToken: string;
+  refreshToken: string;
+  userId: string;
+  name: string;
+  email: string;
 }
 
 export const useAuth = () => {
@@ -43,8 +44,6 @@ export const useAuth = () => {
       HttpMethod.POST,
       input
     );
-    Storage.setItem(StorageKey.ACCESS_TOKEN, response.accessToken);
-    Storage.setItem(StorageKey.REFRESH_TOKEN, response.refreshToken);
     return response;
   };
 
