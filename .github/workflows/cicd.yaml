@@ -41,7 +41,7 @@ jobs:
       SERVER_HOST: ${{ secrets.SERVER_HOST }}
       SERVER_USER: ${{ secrets.SERVER_USER }}
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      VITE_API_URL: ${{ env.VITE_API_URL }}
+      VITE_API_URL: ${{ vars.VITE_API_URL }}
 
     steps:
       - name: Deploy to Server
