@@ -33,6 +33,15 @@ export interface SignInResponse {
   email: string;
 }
 
+export interface SignInWithGoogleResponse {
+  traceId: string;
+  statusCode: StatusCode;
+  reasonCode?: string;
+  reasonMessage?: string;
+  timeMs?: string;
+  url: string;
+}
+
 export const useAuth = () => {
   const signUp = async (input: SignUpRequest): Promise<SignUpResponse> => {
     return httpRequest<SignUpResponse>("auth/signup", HttpMethod.POST, input);
@@ -47,5 +56,13 @@ export const useAuth = () => {
     return response;
   };
 
-  return { signUp, signIn };
+  const signInWithGoogle = async (): Promise<SignInWithGoogleResponse> => {
+    const response = await httpRequest<SignInWithGoogleResponse>(
+      "auth/signin-with-google",
+      HttpMethod.GET
+    );
+    return response;
+  };
+
+  return { signUp, signIn, signInWithGoogle };
 };

@@ -10,7 +10,7 @@ import {
 } from "@/core/components/shadcn/form";
 import { Input } from "@/core/components/shadcn/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Github } from "lucide-react";
+import { Github, Mail } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -31,7 +31,7 @@ const signInSchema = z.object({
 type SignInFormValues = z.infer<typeof signInSchema>;
 
 export default function SignInView() {
-  const { signIn } = useAuth();
+  const { signIn, signInWithGoogle } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -77,6 +77,14 @@ export default function SignInView() {
     console.log("GitHub sign in clicked");
   };
 
+  const handleGoogleSignIn = async () => {
+    const response = await signInWithGoogle();
+    if (response.url) {
+      window.location.href = response.url;
+    }
+    setError(response.reasonMessage || "Failed to sign in with Google");
+  };
+
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
@@ -95,6 +103,16 @@ export default function SignInView() {
         >
           <Github className="mr-2 h-4 w-4" />
           GitHub
+        </Button>
+
+        <Button
+          type="button"
+          variant="outline"
+          onClick={handleGoogleSignIn}
+          className="w-full bg-gray-800/50 text-white border-gray-700 hover:bg-gray-700/50 rounded-md h-11 mb-0 "
+        >
+          <Mail className="mr-2 h-4 w-4" />
+          Google
         </Button>
 
         {/* Divider */}
