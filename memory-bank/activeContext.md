@@ -11,6 +11,8 @@ Based on codebase analysis:
 - shadcn/ui components integrated
 - Docker deployment configuration set up
 - TypeScript types defined for all features
+- **User Management enhancement**: Added user detail view (view/edit modes) and delete user functionality in management view.
+- **Hook Stabilization**: Updated `useUsers` to use `useCallback` and `useMemo` for stable references, preventing unnecessary re-renders.
 
 ## Next Steps & Considerations
 
