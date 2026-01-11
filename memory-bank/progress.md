@@ -41,6 +41,13 @@
   - Product cards with image, title, price, category, rating
   - Responsive design
 
+#### User Management Feature
+- **User Listing**: Displays users in a table with pagination and search
+- **User Detail**: View and edit modes for each user
+- **User Deletion**: Ability to delete users directly from the table with confirmation
+- **Hooks**: `useUsers` for fetching, updating, and deleting user data
+- **Routing**: `/user-management/:id/:mode?` for user details
+
 ### ✅ UI Components
 - shadcn/ui components integrated:
   - Button (with variants)
