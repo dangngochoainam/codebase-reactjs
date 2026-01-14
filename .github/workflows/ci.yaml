@@ -30,6 +30,8 @@ jobs:
         with:
           context: .
           push: true
+          build-args: |
+            VITE_API_URL=${{ vars.VITE_API_URL }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/codebase-reactjs:${{ github.sha }}
             ${{ secrets.DOCKERHUB_USERNAME }}/codebase-reactjs:latest
