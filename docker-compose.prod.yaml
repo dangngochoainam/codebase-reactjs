@@ -1,0 +1,14 @@
+services:
+  frontend-codebase: 
+    container_name: codebase-reactjs
+    image: namdnh/codebase-reactjs:latest
+    ports:
+      - "80:80"
+    networks:
+      - docker_stack
+    environment:
+      - NODE_ENV=production
+
+networks:
+  docker_stack:
+    external: true

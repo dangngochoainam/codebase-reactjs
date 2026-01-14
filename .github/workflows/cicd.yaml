@@ -1,0 +1,70 @@
+# name: Docker CI/CD Pipeline
+
+# on:
+#   push:
+#     branches:
+#       - feat/cicd
+
+# jobs:
+#   build_and_push:
+#     runs-on: ubuntu-latest
+#     environment: dev
+#     env:
+#       VITE_API_URL: ${{ vars.VITE_API_URL }}
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Login to Docker Hub
+#         uses: docker/login-action@v2
+#         with:
+#           username: ${{ secrets.DOCKERHUB_USERNAME }}
+#           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+#       - name: Build
+#         run: |
+#           docker build --build-arg VITE_API_URL="$VITE_API_URL" -t codebase-reactjs .
+
+#       - name: Push image to Docker Hub
+#         uses: docker/build-push-action@v2
+#         with:
+#           context: .
+#           push: true
+#           tags: ${{ secrets.DOCKERHUB_USERNAME }}/codebase-reactjs:${{ github.sha }}
+#           build-args: |
+#             VITE_API_URL=${{ vars.VITE_API_URL }}
+
+#   deploy:
+#     runs-on: ubuntu-latest
+#     needs: build_and_push
+
+#     environment: dev
+#     env: 
+#       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+#       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+#       SERVER_HOST: ${{ secrets.SERVER_HOST }}
+#       SERVER_USER: ${{ secrets.SERVER_USER }}
+#       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#       VITE_API_URL: ${{ vars.VITE_API_URL }}
+
+
+#     steps:
+#       - name: Deploy to Server
+#         uses: appleboy/ssh-action@v0.1.3
+#         with:
+#           host: ${{ secrets.SERVER_HOST }}
+#           username: ${{ secrets.SERVER_USER }}
+#           key: ${{ secrets.SSH_PRIVATE_KEY }}
+#           envs: VITE_API_URL
+
+#           script: |
+#             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/codebase-reactjs:${{ github.sha }}
+
+#             docker stop codebase-reactjs || true
+#             docker rm codebase-reactjs || true
+
+#             docker run -d \
+#             -p 80:80 \
+#             --name codebase-reactjs \
+#             --network docker_stack \
+#             ${{ secrets.DOCKERHUB_USERNAME }}/codebase-reactjs:${{ github.sha }}
