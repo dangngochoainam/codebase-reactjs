@@ -1,0 +1,15 @@
+services:
+  frontend-codebase: 
+    container_name: codebase-reactjs
+    image: namdnh/codebase-reactjs:latest
+    ports:
+      - "80:80"
+    networks:
+      - docker_stack
+    environment:
+      - NODE_ENV=production
+      - VITE_API_URL=http://172.93.163.153:50061/v1
+
+networks:
+  docker_stack:
+    external: true
