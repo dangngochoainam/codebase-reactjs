@@ -1,8 +1,7 @@
-import { Button } from "@/core/components/shadcn/button";
-import { ChevronDown, ChevronUp, X } from "lucide-react";
 import type { UserModel } from "../types/user.types";
 import UserSearch from "./UserSearch";
 import { useNavigate } from "react-router";
+import { MONO, SANS } from "@/core/lib/utils/styles";
 
 interface UserTableProps {
   users: UserModel[];
@@ -11,173 +10,225 @@ interface UserTableProps {
   onDelete: (id: string) => void;
 }
 
-export default function UserTable({
-  users,
-  search,
-  setSearch,
-  onDelete,
-}: UserTableProps) {
+const COLS = ["Avatar", "Name", "Email", "Status", "Birthday", "Timezone", "Language", "Actions"];
+
+export default function UserTable({ users, search, setSearch, onDelete }: UserTableProps) {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-[#21233d] rounded-sm overflow-hidden mt-4 shadow-xl">
-      <div className="flex items-center justify-between p-4 border-b border-gray-700/30">
-        <h2 className="text-gray-100 text-lg font-normal">Users</h2>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 text-gray-400 hover:text-white hover:bg-transparent"
-          >
-            <ChevronDown className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 text-gray-400 hover:text-white hover:bg-transparent"
-          >
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
-
-      <div className="p-4 flex justify-end">
+    <div style={{ border: "1px solid #1e1f30" }}>
+      {/* Header bar */}
+      <div
+        className="flex items-center justify-between px-5 py-3"
+        style={{ background: "#0a0b12", borderBottom: "1px solid #1e1f30" }}
+      >
+        <span
+          style={{
+            ...MONO,
+            fontSize: "11px",
+            letterSpacing: "0.2em",
+            textTransform: "uppercase",
+            color: "#eee9f0",
+          }}
+        >
+          Users
+        </span>
         <UserSearch search={search} setSearch={setSearch} />
       </div>
 
+      {/* Table */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-left" style={{ borderCollapse: "collapse" }}>
           <thead>
-            <tr className="text-gray-300 text-[11px] font-bold uppercase tracking-wider">
-              <th className="px-6 py-4">
-                <div className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors">
-                  AVATAR{" "}
-                  <div className="flex flex-col -gap-1">
-                    <ChevronUp className="h-2 w-2" />
-                    <ChevronDown className="h-2 w-2" />
-                  </div>
-                </div>
-              </th>
-              <th className="px-6 py-4">
-                <div className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors">
-                  NAME{" "}
-                  <div className="flex flex-col -gap-1">
-                    <ChevronUp className="h-2 w-2" />
-                    <ChevronDown className="h-2 w-2" />
-                  </div>
-                </div>
-              </th>
-              <th className="px-6 py-4">
-                <div className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors">
-                  E-MAIL{" "}
-                  <div className="flex flex-col -gap-1">
-                    <ChevronUp className="h-2 w-2" />
-                    <ChevronDown className="h-2 w-2" />
-                  </div>
-                </div>
-              </th>
-              <th className="px-6 py-4">
-                <div className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors">
-                  IS ACTIVE{" "}
-                  <div className="flex flex-col -gap-1">
-                    <ChevronUp className="h-2 w-2" />
-                    <ChevronDown className="h-2 w-2" />
-                  </div>
-                </div>
-              </th>
-              <th className="px-6 py-4">
-                <div className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors">
-                  BIRTH DATE{" "}
-                  <div className="flex flex-col -gap-1">
-                    <ChevronUp className="h-2 w-2" />
-                    <ChevronDown className="h-2 w-2" />
-                  </div>
-                </div>
-              </th>
-              <th className="px-6 py-4">
-                <div className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors">
-                  TIMEZONE{" "}
-                  <div className="flex flex-col -gap-1">
-                    <ChevronUp className="h-2 w-2" />
-                    <ChevronDown className="h-2 w-2" />
-                  </div>
-                </div>
-              </th>
-              <th className="px-6 py-4">
-                <div className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors">
-                  LANGUAGE{" "}
-                  <div className="flex flex-col -gap-1">
-                    <ChevronUp className="h-2 w-2" />
-                    <ChevronDown className="h-2 w-2" />
-                  </div>
-                </div>
-              </th>
-
-              <th className="px-6 py-4">ACTIONS</th>
+            <tr style={{ background: "#0a0b12", borderBottom: "1px solid #1e1f30" }}>
+              {COLS.map((col) => (
+                <th
+                  key={col}
+                  className="px-5 py-3"
+                  style={{
+                    ...MONO,
+                    fontSize: "9px",
+                    letterSpacing: "0.35em",
+                    textTransform: "uppercase",
+                    color: "#484858",
+                    fontWeight: 500,
+                  }}
+                >
+                  {col}
+                </th>
+              ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-700/30">
-            {users.map((user) => (
-              <tr key={user.id} className="hover:bg-black/10 transition-colors">
-                <td className="px-6 py-3">
+          <tbody>
+            {users.map((user, i) => (
+              <tr
+                key={user.id}
+                style={{
+                  borderBottom: i < users.length - 1 ? "1px solid #111118" : "none",
+                  transition: "background 0.12s",
+                  cursor: "default",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.background = "#0e0f18")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.background = "transparent")
+                }
+              >
+                {/* Avatar */}
+                <td className="px-5 py-3">
                   {user.avatar ? (
                     <img
                       src={user.avatar}
                       alt={user.name}
-                      className="h-10 w-10 rounded-full object-cover"
+                      className="h-8 w-8 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="h-10 w-10 rounded-full bg-yellow-500 flex items-center justify-center text-white font-bold text-lg">
-                      {user.name.charAt(0)}
+                    <div
+                      className="h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold"
+                      style={{
+                        background: "#c9a84c",
+                        color: "#07080d",
+                        ...MONO,
+                      }}
+                    >
+                      {user.name.charAt(0).toUpperCase()}
                     </div>
                   )}
                 </td>
-                <td className="px-6 py-3 text-gray-300 text-sm font-light">
-                  {user.name}
-                </td>
-                <td className="px-6 py-3 text-gray-300 text-sm font-light">
-                  {user.email}
-                </td>
-                <td className="px-6 py-3 text-gray-300 text-sm font-light">
-                  {user.isActive ? "Yes" : "No"}
-                </td>
-                <td className="px-6 py-3 text-gray-300 text-sm font-light">
-                  {user.birthday}
-                </td>
-                <td className="px-6 py-3 text-gray-300 text-sm font-light">
-                  {user.timezone}
-                </td>
-                <td className="px-6 py-3 text-gray-300 text-sm font-light">
-                  {user.language}
+
+                {/* Name */}
+                <td className="px-5 py-3">
+                  <span className="text-[#eee9f0] text-sm" style={SANS}>
+                    {user.name}
+                  </span>
                 </td>
 
-                <td className="px-6 py-3">
-                  <div className="flex items-center gap-1">
-                    <Button
-                      size="sm"
+                {/* Email */}
+                <td className="px-5 py-3">
+                  <span className="text-[#8a8898] text-sm" style={MONO}>
+                    {user.email}
+                  </span>
+                </td>
+
+                {/* Status badge */}
+                <td className="px-5 py-3">
+                  <span
+                    className="px-2 py-0.5"
+                    style={{
+                      ...MONO,
+                      fontSize: "9px",
+                      letterSpacing: "0.3em",
+                      textTransform: "uppercase",
+                      color: user.isActive ? "#2dd4a0" : "#484858",
+                      background: user.isActive
+                        ? "rgba(45,212,160,0.07)"
+                        : "rgba(72,72,88,0.12)",
+                      border: `1px solid ${
+                        user.isActive
+                          ? "rgba(45,212,160,0.2)"
+                          : "rgba(72,72,88,0.25)"
+                      }`,
+                    }}
+                  >
+                    {user.isActive ? "Active" : "Inactive"}
+                  </span>
+                </td>
+
+                {/* Birthday */}
+                <td className="px-5 py-3">
+                  <span className="text-[#8a8898] text-sm" style={MONO}>
+                    {user.birthday || "—"}
+                  </span>
+                </td>
+
+                {/* Timezone */}
+                <td className="px-5 py-3">
+                  <span className="text-[#8a8898] text-sm" style={MONO}>
+                    {user.timezone || "—"}
+                  </span>
+                </td>
+
+                {/* Language */}
+                <td className="px-5 py-3">
+                  <span className="text-[#8a8898] text-sm" style={MONO}>
+                    {user.language || "—"}
+                  </span>
+                </td>
+
+                {/* Actions */}
+                <td className="px-5 py-3">
+                  <div className="flex items-center gap-4">
+                    <button
                       onClick={() => navigate(`/user-management/${user.id}/view`)}
-                      className="bg-blue-500 hover:bg-blue-600 text-[10px] h-6 px-2 rounded-[2px] font-normal"
+                      className="text-[#4e5be0] hover:text-[#7b86f0] transition-colors"
+                      style={{
+                        ...MONO,
+                        fontSize: "10px",
+                        letterSpacing: "0.15em",
+                        textTransform: "uppercase",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        padding: 0,
+                      }}
                     >
                       View
-                    </Button>
-                    <Button
-                      size="sm"
+                    </button>
+                    <button
                       onClick={() => navigate(`/user-management/${user.id}/edit`)}
-                      className="bg-green-500 hover:bg-green-600 text-[10px] h-6 px-2 rounded-[2px] font-normal"
+                      className="text-[#c9a84c] hover:text-[#dfc470] transition-colors"
+                      style={{
+                        ...MONO,
+                        fontSize: "10px",
+                        letterSpacing: "0.15em",
+                        textTransform: "uppercase",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        padding: 0,
+                      }}
                     >
                       Edit
-                    </Button>
-                    <Button
-                      size="sm"
+                    </button>
+                    <button
                       onClick={() => onDelete(user.id)}
-                      className="bg-red-500 hover:bg-red-600 text-[10px] h-6 px-2 rounded-[2px] font-normal"
+                      className="text-[#484858] hover:text-[#e05757] transition-colors"
+                      style={{
+                        ...MONO,
+                        fontSize: "10px",
+                        letterSpacing: "0.15em",
+                        textTransform: "uppercase",
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        padding: 0,
+                      }}
                     >
                       Delete
-                    </Button>
+                    </button>
                   </div>
                 </td>
               </tr>
             ))}
+
+            {users.length === 0 && (
+              <tr>
+                <td
+                  colSpan={COLS.length}
+                  className="px-5 py-12 text-center"
+                  style={{
+                    ...MONO,
+                    fontSize: "11px",
+                    letterSpacing: "0.2em",
+                    color: "#484858",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  No users found
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
