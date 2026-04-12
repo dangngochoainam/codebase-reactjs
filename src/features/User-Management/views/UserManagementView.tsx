@@ -4,6 +4,7 @@ import { useUsers } from "../hooks/useUsers";
 import { useEffect, useState } from "react";
 import type { UserModel } from "../types/user.types";
 import type { PaginationModel } from "@/core/types/base";
+import { EYEBROW, PAGE_HEADING, MONO } from "@/core/lib/utils/styles";
 
 export default function UserManagementView() {
   const { getUsers, deleteUser } = useUsers();
@@ -50,20 +51,30 @@ export default function UserManagementView() {
   };
 
   return (
-    <div className="container mx-auto p-6 min-h-screen bg-[#1a1c2e]">
-      <div className="flex justify-between items-start mb-6">
-        <h1 className="text-3xl font-light text-gray-100">
-          User <span className="font-semibold">Management</span>
-        </h1>
-      </div>
+    <div className="min-h-screen bg-app-bg">
+      <div className="container mx-auto px-6 py-10">
+        {/* Page header */}
+        <div className="flex items-end justify-between mb-8">
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <div className="h-px w-6 bg-app-accent" />
+              <span style={EYEBROW}>Directory</span>
+            </div>
+            <h1 style={PAGE_HEADING}>User Management</h1>
+          </div>
+          <span style={{ ...MONO, fontSize: "11px", color: "var(--app-text-dim)", letterSpacing: "0.05em" }}>
+            {pagination.total} records
+          </span>
+        </div>
 
-      <UserTable
-        users={users}
-        search={search}
-        setSearch={setSearch}
-        onDelete={handleDelete}
-      />
-      <Pagination pagination={pagination} setPagination={setPagination} />
+        <UserTable
+          users={users}
+          search={search}
+          setSearch={setSearch}
+          onDelete={handleDelete}
+        />
+        <Pagination pagination={pagination} setPagination={setPagination} />
+      </div>
     </div>
   );
 }

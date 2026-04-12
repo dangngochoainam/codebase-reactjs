@@ -4,6 +4,21 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  /* App design tokens */
+  --app-bg: #07080d;
+  --app-surface: #0e0f18;
+  --app-surface-raised: #0a0b12;
+  --app-surface-deep: #13141f;
+  --app-border: #1e1f30;
+  --app-border-muted: #252638;
+  --app-accent: #c9a84c;
+  --app-text: #eee9f0;
+  --app-text-muted: #8a8898;
+  --app-text-dim: #484858;
+  --app-success: #2dd4a0;
+  --app-danger: #e05757;
+  --app-indigo: #4e5be0;
+
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -75,6 +90,21 @@
 }
 
 @theme inline {
+  /* App design tokens → Tailwind utilities */
+  --color-app-bg: var(--app-bg);
+  --color-app-surface: var(--app-surface);
+  --color-app-surface-raised: var(--app-surface-raised);
+  --color-app-surface-deep: var(--app-surface-deep);
+  --color-app-border: var(--app-border);
+  --color-app-border-muted: var(--app-border-muted);
+  --color-app-accent: var(--app-accent);
+  --color-app-text: var(--app-text);
+  --color-app-text-muted: var(--app-text-muted);
+  --color-app-text-dim: var(--app-text-dim);
+  --color-app-success: var(--app-success);
+  --color-app-danger: var(--app-danger);
+  --color-app-indigo: var(--app-indigo);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
